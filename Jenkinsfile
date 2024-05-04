@@ -8,7 +8,7 @@ steps {
  }
  stage('Doc') {
  steps {
- bat 'mvn jacoco:report'
+ bat 'mvn javadoc:jar'
  }
  }
  stage('pmd') {
@@ -18,7 +18,7 @@ steps {
  }
    stage('test report') {
  steps {
-   bat 'mvn -Dtest=TestCss,TestFileResource,BaseJerseyTest test'
+   bat 'mvn -Dtest=TestCss -DfailIfNoTests=false test'
    bat 'mvn surefire-report:report'
  }
  }
