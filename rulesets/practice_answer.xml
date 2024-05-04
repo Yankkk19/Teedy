@@ -14,6 +14,7 @@
     <rule ref="category/java/design.xml/CyclomaticComplexity" />
     <rule ref="category/java/design.xml/DataClass" />
     <rule ref="category/java/design.xml/CouplingBetweenObjects" />
+    <rule ref="category/java/design.xml/GodClass" />
 
     <!-- Your rules will come here -->
 
