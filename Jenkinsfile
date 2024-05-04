@@ -6,6 +6,11 @@ steps {
  bat 'mvn -B -DskipTests clean package' 
 }
  }
+ stage('Doc') {
+ steps {
+ bat 'mvn jacoco:report'
+ }
+ }
  stage('pmd') {
  steps {
  bat 'mvn pmd:pmd'
@@ -15,7 +20,6 @@ steps {
  steps {
    bat 'mvn test --fail-never'
    bat 'mvn surefire-report:report'
- bat 'mvn jacoco:report'
  }
  }
  }
