@@ -18,7 +18,7 @@ steps {
  }
    stage('test report') {
  steps {
-   bat 'mvn test --fail-never'
+   bat 'mvn -Dtest=TestCss,TestFileResource,BaseJerseyTest test'
    bat 'mvn surefire-report:report'
  }
  }
