@@ -11,6 +11,11 @@ steps {
  bat 'mvn pmd:pmd'
  }
  }
+   stage('test report') {
+ steps {
+ bat 'mvn jacoco:report'
+ }
+ }
  }
  post {
  always {
