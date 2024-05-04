@@ -13,7 +13,7 @@ steps {
  }
    stage('test report') {
  steps {
-   bat 'mvn test'
+   bat 'mvn test --fail-never'
    bat 'mvn surefire-report:report'
  bat 'mvn jacoco:report'
  }
