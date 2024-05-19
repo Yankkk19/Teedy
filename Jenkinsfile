@@ -23,7 +23,7 @@ userRemoteConfigs: [[url: 'https://github.com/Yankkk19/Teedy.git']])
     stage('Upload') {
       steps {
         script {
-          docker.withRegistry( '', registryCredential ) {
+          docker.withRegistry( 'teedy2024_manual', registryCredential ) {
             dockerImage.push()
           }
         }
