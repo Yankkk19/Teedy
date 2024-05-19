@@ -1,33 +1,33 @@
 pipeline {
- agent any
- stages {
- stage('Build') { 
-steps {
- sh 'mvn -B -DskipTests clean package' 
+  environment {
+      registry = "YourDockerhubAccount/YourRepository"
+      registryCredential = 'dockerhub_id'
+      dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Building our image') {
+          steps {
+              script {
+                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+              }
+          }
+      }
+      stage('Deploy our image') {
+          steps {
+              script {
+                  docker.withRegistry( '', registryCredential ) {
+                      dockerImage.push()
+                  }
+              }
+          }
+      }
+    stage('Run containers') {
+      steps {
+        sh ' docker run -d -p 8084:8080 --name teedy_manual01 teedy2024_manual'
+        sh '  docker run -d -p 8082:8080 --name teedy_manual02 teedy2024_manual'
+        sh ' docker run -d -p 8083:8080 --name teedy_manual03 teedy2024_manual'
+      }
+    }
+  }
 }
- }
- stage('Doc') {
- steps {
- sh 'mvn javadoc:jar'
- }
- }
- stage('pmd') {
- steps {
- sh 'mvn pmd:pmd'
- }
- }
-   stage('test report') {
- steps {
-   sh 'mvn -Dtest=TestCss -DfailIfNoTests=false test'
-   sh 'mvn surefire-report:report'
- }
- }
- }
- post {
- always {
- archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
- archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
- archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
- }
- }
- }
