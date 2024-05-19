@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+      registry = "yankkkkk/teedy_local:v1.0"
+      registryCredential = 'docker_hub_id'
+      dockerImage = 'teedy2024_manual'
+  }
   agent any
   stages {
     stage('Package') { 
@@ -10,15 +15,18 @@ userRemoteConfigs: [[url: 'https://github.com/Yankkk19/Teedy.git']])
     }
     stage('Build') { 
       steps {
-        sh 'docker build -t teedy2024_manual .' 
+        script {
+                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+              }
       }
     }
     stage('Upload') {
       steps {
-        sh 'docker login  -u yankkkkk'
-        sh 'dckr_pat_MXQycyw5fYlnleGaiELjkbznDd4'
-        sh 'docker tag teedy2024_manual yankkkkk/teedy_local:v1.0'
-        sh 'docker push yankkkkk/teedy_local:v1.0'
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
       }
     }
     stage('Run containers') {
