@@ -3,23 +3,23 @@ pipeline {
  stages {
  stage('Build') { 
 steps {
- bat 'mvn -B -DskipTests clean package' 
+ sh 'mvn -B -DskipTests clean package' 
 }
  }
  stage('Doc') {
  steps {
- bat 'mvn javadoc:jar'
+ sh 'mvn javadoc:jar'
  }
  }
  stage('pmd') {
  steps {
- bat 'mvn pmd:pmd'
+ sh 'mvn pmd:pmd'
  }
  }
    stage('test report') {
  steps {
-   bat 'mvn -Dtest=TestCss -DfailIfNoTests=false test'
-   bat 'mvn surefire-report:report'
+   sh 'mvn -Dtest=TestCss -DfailIfNoTests=false test'
+   sh 'mvn surefire-report:report'
  }
  }
  }
